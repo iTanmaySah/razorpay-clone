@@ -1,7 +1,7 @@
 package com.program.razorpay.merchant.dto.response;
 
-import com.codingshuttle.razorpay.common.enums.BusinessType;
-import com.codingshuttle.razorpay.common.enums.MerchantStatus;
+import com.program.razorpay.common.enums.BusinessType;
+import com.program.razorpay.common.enums.MerchantStatus;
 import lombok.Data;
 
 import java.util.UUID;
