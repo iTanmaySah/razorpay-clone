@@ -1,7 +1,7 @@
 package com.program.razorpay.payment.entity;
 
 import com.program.razorpay.common.entity.Money;
-import com.program.razorpay.common.enums.OrderStatus;
+import com.program.razorpay.common.enums.RefundStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -12,40 +12,44 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "order_record")
+@Table(name = "refund")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderRecord {
+public class Refund {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // no FK — cross-service boundary
-    @Column(name = "merchant_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "payment_id", nullable = false)
+    private Payment payment;
+
+    @Column(nullable = false)
     private UUID merchantId;
 
     @Embedded
     private Money amount;
 
-    @Column(length = 100)
-    private String receipt;
-
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private OrderStatus orderStatus = OrderStatus.CREATED;
-
     @Column(nullable = false)
-    @Builder.Default
-    private Integer attempts = 0;
+    private RefundStatus status = RefundStatus.PENDING;
 
-    @JdbcTypeCode((SqlTypes.JSON))
+    @Column(length = 100)
+    private String bankReference;
+
+    @Column(length = 100)
+    private String errorCode;
+
+    @Column(length = 500)
+    private String errorDescription;
+
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> notes;
 
-    @Column(nullable = false)
-    private LocalDateTime expiresAt;
+    private LocalDateTime processedAt;
 }

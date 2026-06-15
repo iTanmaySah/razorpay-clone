@@ -1,15 +1,15 @@
 package com.program.razorpay.merchant.service.impl;
 
-import com.codingshuttle.razorpay.common.enums.MerchantStatus;
-import com.codingshuttle.razorpay.common.enums.UserRole;
-import com.codingshuttle.razorpay.common.exception.DuplicateResourceException;
-import com.codingshuttle.razorpay.merchant.dto.request.MerchantSignupRequest;
-import com.codingshuttle.razorpay.merchant.dto.response.MerchantResponse;
-import com.codingshuttle.razorpay.merchant.entity.AppUser;
-import com.codingshuttle.razorpay.merchant.entity.Merchant;
-import com.codingshuttle.razorpay.merchant.repository.AppUserRepository;
-import com.codingshuttle.razorpay.merchant.repository.MerchantRepository;
-import com.codingshuttle.razorpay.merchant.service.AuthService;
+import com.program.razorpay.common.enums.MerchantStatus;
+import com.program.razorpay.common.enums.UserRole;
+import com.program.razorpay.common.exception.DuplicateResourceException;
+import com.program.razorpay.merchant.dto.request.MerchantSignupRequest;
+import com.program.razorpay.merchant.dto.response.MerchantResponse;
+import com.program.razorpay.merchant.entity.AppUser;
+import com.program.razorpay.merchant.entity.Merchant;
+import com.program.razorpay.merchant.repository.AppUserRepository;
+import com.program.razorpay.merchant.repository.MerchantRepository;
+import com.program.razorpay.merchant.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
