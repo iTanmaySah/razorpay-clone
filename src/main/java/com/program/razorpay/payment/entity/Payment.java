@@ -4,6 +4,8 @@ import com.program.razorpay.common.entity.Money;
 import com.program.razorpay.common.enums.PaymentMethod;
 import com.program.razorpay.common.enums.PaymentStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -13,6 +15,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "payment")
+@Getter
+@Setter
 public class Payment {
 
     @Id
