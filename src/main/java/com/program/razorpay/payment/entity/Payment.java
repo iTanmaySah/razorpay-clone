@@ -1,5 +1,6 @@
 package com.program.razorpay.payment.entity;
 
+import com.program.razorpay.common.entity.BaseEntity;
 import com.program.razorpay.common.entity.Money;
 import com.program.razorpay.common.enums.PaymentMethod;
 import com.program.razorpay.common.enums.PaymentStatus;
@@ -20,7 +21,7 @@ import java.util.UUID;
 })
 @Getter
 @Setter
-public class Payment {
+public class Payment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

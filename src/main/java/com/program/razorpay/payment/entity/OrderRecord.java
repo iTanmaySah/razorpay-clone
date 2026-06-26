@@ -1,5 +1,6 @@
 package com.program.razorpay.payment.entity;
 
+import com.program.razorpay.common.entity.BaseEntity;
 import com.program.razorpay.common.entity.Money;
 import com.program.razorpay.common.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderRecord {
+public class OrderRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
