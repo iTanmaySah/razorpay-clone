@@ -10,12 +10,15 @@ import com.program.razorpay.payment.entity.OrderRecord;
 import com.program.razorpay.payment.entity.Payment;
 import com.program.razorpay.payment.gateway.PaymentGatewayRouter;
 import com.program.razorpay.payment.gateway.dto.PaymentRequest;
+import com.program.razorpay.payment.gateway.dto.PaymentResult;
+import com.program.razorpay.payment.mapper.PaymentMapper;
 import com.program.razorpay.payment.repository.OrderRepository;
 import com.program.razorpay.payment.repository.PaymentRepository;
 import com.program.razorpay.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,8 +31,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentGatewayRouter paymentGatewayRouter;
+    private final PaymentMapper paymentMapper;
 
     @Override
+    @Transactional
     public PaymentResponse initiate(UUID merchantId, PaymentInitRequest request) {
         OrderRecord order = orderRepository.findByIdAndMerchantId(request.orderId(), merchantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", request.orderId()));
@@ -63,8 +68,20 @@ public class PaymentServiceImpl implements PaymentService {
                 request.method(),
                 request.methodDetails());
 
-        paymentGatewayRouter.initiate(paymentRequest);
+        PaymentResult result = paymentGatewayRouter.initiate(paymentRequest);
 
-        return null;
+        if(result instanceof PaymentResult.Pending pending){
+            payment.setProcessorReference(pending.registrationRef());
+
+        }else if(result instanceof PaymentResult.Failure failure){
+            payment.setStatus(PaymentStatus.FAILED);
+            payment.setErrorCode(failure.errorCode());
+            payment.setErrorDescription(failure.errorDescription());
+        }
+
+        payment = paymentRepository.save(payment);
+        orderRepository.save(order);
+
+        return paymentMapper.toResponse(payment);
     }
 }

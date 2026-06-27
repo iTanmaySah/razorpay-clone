@@ -1,8 +1,9 @@
 package com.program.razorpay.payment.gateway;
 
 import com.program.razorpay.payment.gateway.dto.PaymentRequest;
+import com.program.razorpay.payment.gateway.dto.PaymentResult;
 
 public interface PaymentAdapter {
 
-    void initiate(PaymentRequest request);
+    PaymentResult initiate(PaymentRequest request);
 }
